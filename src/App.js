@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { createRenderer } from 'fela'
+import { RendererProvider } from 'react-fela'
+import Image from './components/image';
+import Wrapper from './components/wrapper';
+import Heading from './components/typography/heading';
+import PlayControl from './components/play-control';
+import './styles/variables.css'
+import { albumData } from './shared/data'
 
 function App() {
+
+  const felaRenderer = createRenderer();
+  const imageSize = 500;
+  const audio = new Audio(albumData[0].audio);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RendererProvider renderer={felaRenderer}>
+      <Wrapper size={imageSize}>
+        <Image size={imageSize} src={albumData[0].image} alt={albumData[0].artist}/>
+        <Heading fontSize={36} text={albumData[0].artist}/>
+        <Heading h2 text={albumData[0].title} />
+        <PlayControl pauseColor={'--maximum-yellow'} playColor={'#050505ff'} audio={audio}/>
+      </Wrapper>
+    </RendererProvider>
   );
 }
 
