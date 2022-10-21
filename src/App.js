@@ -6,6 +6,7 @@ import Heading from './components/typography/heading';
 import PlayControl from './components/play-control';
 import './styles/variables.css'
 import { albumData } from './shared/data'
+import { Helmet } from 'react-helmet'
 
 function App() {
 
@@ -14,6 +15,10 @@ function App() {
   const audio = new Audio(albumData[0].audio);
 
   return (
+    <>
+    <Helmet>
+      <title>NBHB</title>
+    </Helmet>
     <RendererProvider renderer={felaRenderer}>
       <Wrapper size={imageSize}>
         <Image size={imageSize} src={albumData[0].image} alt={albumData[0].artist}/>
@@ -22,6 +27,7 @@ function App() {
         <PlayControl pauseColor={'--maximum-yellow'} playColor={'#050505ff'} audio={audio}/>
       </Wrapper>
     </RendererProvider>
+    </>
   );
 }
 
