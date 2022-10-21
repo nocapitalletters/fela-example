@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useRef, useLayoutEffect } from 'react'
 import { useFela } from 'react-fela'
 import '../../styles/variables.css'
 import { useAtom } from 'jotai';
