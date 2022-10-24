@@ -4,79 +4,103 @@ import '../../styles/variables.css'
 import { useAtom } from 'jotai';
 import { isPlayingConfig } from '../../state/atoms';
 import { Circ, Power0, gsap } from 'gsap'
+import { selectedTrack } from '../../shared/data'
 
 const px = 'px';
 
-
-
-const Image = ({ size = 240, alt, src }) => {
+const Image = ({ size = 240}) => {
+  //
+  // Fetch state atom
+  //
   const [isPlayingAtom, ] = useAtom(isPlayingConfig);
-  const imageRef = useRef(); // create a ref for the root level element (we'll use it later)
+  const [selectedTrackAtom, ] = useAtom(selectedTrack);
+  const imageRef = useRef();
+  const wrapperRef = useRef();
+  //
+  // Create gsap timeline
+  //
+  const timeline = useRef(gsap.timeline({ paused: true }));
 
+  console.log(selectedTrackAtom.title)
+
+  //
+  // On load animation
+  //
   useLayoutEffect(() => {
     let context = gsap.context(() => {
-      gsap.to("#fuckYou", { 
+      gsap.to('img', { 
         ease: Circ.easeOut, 
         duration: 3, 
         rotation: "+=1440"
       });
-      gsap.to("img", { 
-        ease: Circ.easeOut, 
-        duration: 4, 
-        '--rich-black-fogra-39': '#ffe6ff'
-      });
     }, imageRef);
     return () => context.revert();
-  }, []);
+  }, [selectedTrackAtom]);
 
   useLayoutEffect(() => {
     let context = gsap.context(() => {
-      let playTween = gsap.to("#fuckYou", { 
+      gsap.to('div', { 
+        ease: Circ.easeOut, 
+        duration: 6, 
+        '--rich-black-fogra-39': '#ffe6ff'
+      });
+    }, wrapperRef);
+    return () => context.revert();
+  }, [selectedTrackAtom]);
+
+  //
+  // Music playing animation
+  //
+  useLayoutEffect(() => {
+    timeline.current
+      .to('img', { 
         duration: 8, 
         repeat: -1,
         ease: Power0.easeNone, 
         rotation: "+=360"
-      });
-      if (isPlayingAtom) {
-        console.log("it is playing: " + isPlayingAtom);
-        playTween.play();
-      } else {
-        console.log("it is not playing: " + isPlayingAtom);
-        playTween.pause();
-      }
-    }, imageRef);
-    return () => context.revert();
-  }, [isPlayingAtom]);
+      })
+  }, [timeline]);
 
+  useLayoutEffect(() => {
+    isPlayingAtom ? timeline.current.play() : timeline.current.pause();   
+  }, [isPlayingAtom, timeline]);
+
+  //
+  // Pass state to Fela
+  //
   const { css } = useFela({ size, isPlayingAtom });
 
   return (
-    <div ref={imageRef}>
-      <img id={'fuckYou'} alt={alt} src={src} className={css([baseStyleRule, styleRule])} /> 
-    </div>);
+    <div ref={wrapperRef}>
+      <div ref={imageRef} className={css([containerStyle, styleRule])}>
+        <img alt={selectedTrackAtom.artist} src={selectedTrackAtom.image} className={css(baseStyleRule)} /> 
+      </div>
+    </div>
+    );
 }
 
+//
+// Style rules
+//
 const baseStyleRule = ({ size }) => ({
-  height: size + px,
-  width: size + px,
-  marginTop: 80 + px,
-  borderRadius: size/2 + px,
+
 });
 
-/* const rotationKeyframe = () => ({
-  from: { transform: 'rotate(0deg)' },
-    to: { transform: 'rotate(360deg)' }
-}) */
-
-const styleRule = ({ isPlayingAtom }, renderer) => ({
+const styleRule = ({ isPlayingAtom }) => ({
   border: isPlayingAtom ? `4px solid var(--maximum-yellow)` : `4px solid var(--rich-black-fogra-39)`,
   ':hover': {
     border: '4px solid var(--mountain-meadow)'
-  },
-  //animationName: isPlayingAtom ? renderer.renderKeyframe(rotationKeyframe) : 'none',
-  //animationDuration: '5s',
-  //animationIterationCount: 'infinite',
-  //animationTimingFunction: 'linear'
+  }
+});
+
+const containerStyle = ({ size }) => ({
+  height: size + px,
+  width: size + px,
+  overflow: 'hidden',
+  borderRadius: size/2 + px,
+  marginTop: 80 + px,
+  display: 'flex',
+  justifyContent: 'center'
 });
 
 export default Image;
