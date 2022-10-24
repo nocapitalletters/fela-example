@@ -2,8 +2,6 @@ import React from 'react'
 import { useFela } from 'react-fela'
 import '../../styles/variables.css'
 
-const px = 'px';
-
 const TracksWrapper = ({ children }) => {
 
     const { css } = useFela();
