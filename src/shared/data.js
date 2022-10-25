@@ -19,16 +19,16 @@ import { atom } from 'jotai';
     },
     {
       id: 1002,
-      title: "I Don't Wanna Face It",
-      artist: 'John Lennon',
+      title: 'Step Inside Love / Los Paranoias',
+      artist: 'The Beatles',
       image: require('../resources/song2.webp'),
-      audio: require('../resources/song2.mp3')
+      audio: require('../resources/song3.mp3')
     },
     {
       id: 1003,
-      title: 'Step Inside Love / Los Paranoias',
-      artist: 'The Beatles',
+      title: 'Deep Blue',
+      artist: 'George Harrison',
       image: require('../resources/song3.webp'),
-      audio: require('../resources/song3.mp3')
+      audio: require('../resources/song2.mp3')
     }
   ];

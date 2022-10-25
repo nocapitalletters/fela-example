@@ -2,6 +2,8 @@ import React from 'react'
 import { useFela } from 'react-fela'
 import '../../styles/variables.css'
 
+const px = 'px';
+
 const MainWrapper = ({ children }) => {
 
     const { css } = useFela();
@@ -13,7 +15,8 @@ const style = () => ({
     background: 'transparent',
     display: 'flex',
     justifyContent: 'space-evenly',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    maxWidth: 1300 + px
 });
 
 export default MainWrapper;

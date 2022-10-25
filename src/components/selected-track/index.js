@@ -31,7 +31,8 @@ const style = ({ size }) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: 50 + px
+    marginTop: 50 + px,
+    zIndex: 999
 });
 
 export default SelectedTrack;

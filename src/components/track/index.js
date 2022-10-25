@@ -1,30 +1,35 @@
-import React from 'react'
+import { React } from 'react'
 import { useFela } from 'react-fela'
 import '../../styles/variables.css'
 import { useAtom } from 'jotai';
 import { selectedTrack } from '../../shared/data'
-import { isPlayingConfig } from '../../state/atoms';
+import { isPlayingConfig, timeRemainingConfig } from '../../state/atoms';
+
 
 const px = 'px';
 
 const Track = ({ track }) => {
 
     const [isPlayingAtom, setIsPlayingAtom] = useAtom(isPlayingConfig);
-    const [selectedTrackAtom, setIsSelectedTrackAtom] = useAtom(selectedTrack)
+    const [selectedTrackAtom, setIsSelectedTrackAtom] = useAtom(selectedTrack);
+    const [, setTimeRemaining] = useAtom(timeRemainingConfig);
+
     const isSelected = selectedTrackAtom.id === track.id;
+    
     const { css } = useFela({ isSelected, isPlayingAtom });
 
     const changeTrack = () => {
         if (isPlayingAtom) {
             return
         } else {
-            setIsSelectedTrackAtom(track);
             setIsPlayingAtom(false);
+            setTimeRemaining('');
+            setIsSelectedTrackAtom(track);
         }
     };
 
     return (
-        <div onClick={() => changeTrack()} className={css(style)}>
+        <div onClick={() => changeTrack()} className={'animateTrack ' + css(style)}>
             <p>{track.title}</p>
             <p>{track.artist}</p>
         </div>

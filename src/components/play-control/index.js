@@ -85,8 +85,9 @@ const PlayControl = ({ playColor, pauseColor }) => {
             // Clean up interval function
             //
             clearInterval(timeRemainingInterval);
+            setTimeRemaining('');
         };
-    }, [selectedTrackAtom, audio, setTimeRemaining, setIsPlayingAtom, timeRemainingInterval]);
+    }, [audio, setTimeRemaining, setIsPlayingAtom, timeRemainingInterval]);
 
     //
     // Toggle play method
